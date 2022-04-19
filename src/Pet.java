@@ -1,6 +1,5 @@
-import org.w3c.dom.ranges.Range;
-
-import java.time.temporal.ValueRange;
+import java.sql.Time;
+import java.util.Timer;
 
 public class Pet {
     int happinessLvl, healthLvl, happinessMax, healthMax;
@@ -14,8 +13,15 @@ public class Pet {
         this.healthMax = 100;
     }
 
-    public void petHealth(){
-        if(healthLvl>30) {
+    public void petHealth() {
+        if(healthLvl!=0){
+            healthLvl -= 1;
+        }
+        System.out.println(healthLvl);
+    }
+
+
+/*        if(healthLvl>30) {
             System.out.println("Your pet" + name + "is healthy.");
         }
         else if(healthLvl>10){
@@ -23,8 +29,8 @@ public class Pet {
         }
         else {
             System.out.println(name+" is ill. Please give "+name+" some medicine and take better care or "+name);
-        }
-    }
+        }*/
+
     public void moreHappiness(){
         if(happinessLvl > 100){
             happinessLvl = happinessMax;

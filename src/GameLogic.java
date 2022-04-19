@@ -1,7 +1,8 @@
-import javax.swing.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
+import java.util.Timer;
+import java.util.TimerTask;
 
 
 public class GameLogic {
@@ -64,17 +65,26 @@ public class GameLogic {
                     pet.healthLvl = pet.healthLvl + broccoli.foodValue;
                     pet.moreHealth();
                 }
-
-                System.out.println(pet.healthLvl +"+"+ pet.happinessLvl);
             }
         });
 
+        Var.init();
 
-        while (run) {
-            c.feeding();
+        Timer timer = new Timer();
+        timer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                Var.currentTime = System.currentTimeMillis();
+                long count = Var.currentTime - Var.startTime;
+                c.feeding();
+                System.out.println(count);
+                if (count >= 800) {
+                    pet.petHealth();
+                    Var.startTime = System.currentTimeMillis();
+                }
+            }
+        }, 0, 60);
 
-
-        }
     }
 }
 
