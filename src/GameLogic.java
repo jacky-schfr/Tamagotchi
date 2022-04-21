@@ -34,10 +34,6 @@ public class GameLogic {
 
         Pet pet = new Pet("Cutie");
 
-
-        System.out.println(pet.happinessLvl);
-
-
         boolean run = true;
 
         CanvasLayer c = new CanvasLayer(foodCanvas, pet);
@@ -75,12 +71,15 @@ public class GameLogic {
             @Override
             public void run() {
                 Var.currentTime = System.currentTimeMillis();
-                long count = Var.currentTime - Var.startTime;
+                c.basicStats();
                 c.feeding();
-                System.out.println(count);
-                if (count >= 800) {
+                if ((Var.currentTime - Var.healthTimer) >= 200) {
                     pet.petHealth();
-                    Var.startTime = System.currentTimeMillis();
+                    Var.healthTimer = System.currentTimeMillis();
+                }
+                if ((Var.currentTime - Var.loveTimer) >= 600){
+                    pet.petLove();
+                    Var.loveTimer = System.currentTimeMillis();
                 }
             }
         }, 0, 60);

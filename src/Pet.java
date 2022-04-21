@@ -2,7 +2,7 @@ import java.sql.Time;
 import java.util.Timer;
 
 public class Pet {
-    int happinessLvl, healthLvl, happinessMax, healthMax;
+    int happinessLvl, healthLvl, happinessMax, healthMax, loveLvl;
     String name;
 
     public Pet(String name){
@@ -11,13 +11,21 @@ public class Pet {
         this.healthLvl = 50;
         this.happinessMax = 100;
         this.healthMax = 100;
+        this.loveLvl = 0;
     }
 
     public void petHealth() {
         if(healthLvl!=0){
             healthLvl -= 1;
         }
-        System.out.println(healthLvl);
+    }
+
+    public void petLove(){
+        if(loveLvl<100) {
+            if (healthLvl >= 50 && happinessLvl >= 30 || healthLvl >= 30 && happinessLvl >= 50) {
+                loveLvl += 5;
+            }
+        }
     }
 
 
