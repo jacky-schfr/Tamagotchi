@@ -46,7 +46,6 @@ public class CanvasLayer {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
     }
 
     public void basicStats() {
@@ -55,7 +54,7 @@ public class CanvasLayer {
         g.clearRect(0, 0, width, height);
         g.setColor(new Color(255, 255, 255));
         g.drawString("What do you want to feed?", width / 2 - 70, height / 2 - 100);
-        g.setColor(new Color(99, 255, 143, 255));
+        g.setColor(new Color(146, 255, 175, 255));
         g.drawString("Health", 180, 20);
         for (int i = 1; i <= name.healthLvl / 10; i++) {
             int rectPos = 240 + i * 11;
@@ -84,21 +83,19 @@ public class CanvasLayer {
         g.setColor(new Color(255, 255, 255));
         for (Food i : foodCanvas) {
             if(i == foodCanvas.get(0)) {
-                g.drawString("Cupcake", i.x+10, i.y + 50);
-                g.drawImage(cupcake, i.x-20, i.y-50, null);
+                g.drawString("Cupcake", i.x+30, i.y+100);
+                g.drawImage(cupcake, i.x, i.y, null);
             }
             if(i == foodCanvas.get(1)) {
-                g.drawString("Pizza", i.x+20, i.y + 50);
-                g.drawImage(pizza, i.x-20, i.y-50, null);
+                g.drawString("Pizza", i.x+40, i.y+100);
+                g.drawImage(pizza, i.x, i.y, null);
             }
             if(i == foodCanvas.get(2)) {
-                g.drawString("Broccoli", i.x+10, i.y + 50);
-                g.drawImage(broccoli, i.x-20, i.y-50, null);
+                g.drawString("Broccoli", i.x+30, i.y+100);
+                g.drawImage(broccoli, i.x, i.y, null);
             }
         }
-
         bufferStrategy.show();
         g.dispose();
-
     }
 }

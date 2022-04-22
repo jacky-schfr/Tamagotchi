@@ -64,7 +64,7 @@ public class GameLogic {
             }
         });
 
-        Var.init();
+        Var.healthTimer = Var.init();
 
         Timer timer = new Timer();
         timer.schedule(new TimerTask() {
@@ -73,13 +73,13 @@ public class GameLogic {
                 Var.currentTime = System.currentTimeMillis();
                 c.basicStats();
                 c.feeding();
-                if ((Var.currentTime - Var.healthTimer) >= 200) {
+                pet.updatePet();
+                if (pet.moreLove && pet.lveTimer == null) {
+                    pet.petLove();
+                }
+                if ((Var.currentTime - Var.healthTimer) >= 500) {
                     pet.petHealth();
                     Var.healthTimer = System.currentTimeMillis();
-                }
-                if ((Var.currentTime - Var.loveTimer) >= 600){
-                    pet.petLove();
-                    Var.loveTimer = System.currentTimeMillis();
                 }
             }
         }, 0, 60);

@@ -1,9 +1,9 @@
 public class Var {
 
     public static long currentTime;
-    public static long healthTimer, loveTimer;
+    public static long healthTimer, loveTimer, happinessTimer, hygeneTimer;
 
-    public static void init(){
-        healthTimer = System.currentTimeMillis();
+    public static long init(){
+        return System.currentTimeMillis();
     }
 }
