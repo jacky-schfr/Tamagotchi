@@ -20,20 +20,20 @@ public class Food {
     }
 
     public void cupcakeParameter() {
-        this.x = 40;
-        this.y = 150;
+        this.x = 150;
+        this.y = 250;
         this.ovalHeight = 100;
         this.ovalWidth = 70;
     }
     public void pizzaParameter(){
-        this.x = 140;
-        this.y = 150;
+        this.x = 250;
+        this.y = 250;
         this.ovalHeight = 100;
         this.ovalWidth = 70;
     }
     public void broccoliParameter(){
-        this.x = 240;
-        this.y = 150;
+        this.x = 350;
+        this.y = 250;
         this.ovalHeight = 100;
         this.ovalWidth = 70;
     }

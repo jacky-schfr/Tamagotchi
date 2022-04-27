@@ -12,14 +12,24 @@ public class CanvasLayer {
     Canvas canvas = new Canvas();
     ArrayList<Food> foodCanvas;
     Graphics g;
-    int width = 400;
-    int height = 400;
+    int width = 615;
+    int height = 635;
     BufferStrategy bufferStrategy;
-    BufferedImage cupcake, pizza, broccoli;
+    BufferedImage cupcake, pizza, broccoli, bg, pet;
 
     public CanvasLayer(ArrayList<Food> foodCanvas, Pet name) {
         this.foodCanvas = foodCanvas;
         this.name = name;
+
+        try {
+            cupcake = ImageIO.read(new File("src/images/cupcake.png"));
+            pizza = ImageIO.read(new File("src/images/pizza.png"));
+            broccoli = ImageIO.read(new File("src/images/broccoli.png"));
+            bg = ImageIO.read(new File("src/images/bg.png"));
+            pet = ImageIO.read(new File(name.petA(1)));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
         mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         mainFrame.setSize(width, height);
@@ -38,49 +48,58 @@ public class CanvasLayer {
         canvas.createBufferStrategy(3);
         bufferStrategy = canvas.getBufferStrategy();
 
-
-        try {
-            cupcake = ImageIO.read(new File("src/images/cupcake.png"));
-            pizza = ImageIO.read(new File("src/images/pizza.png"));
-            broccoli = ImageIO.read(new File("src/images/broccoli.png"));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
     }
 
     public void basicStats() {
 
         g = bufferStrategy.getDrawGraphics();
         g.clearRect(0, 0, width, height);
-        g.setColor(new Color(255, 255, 255));
-        g.drawString("What do you want to feed?", width / 2 - 70, height / 2 - 100);
-        g.setColor(new Color(146, 255, 175, 255));
-        g.drawString("Health", 180, 20);
+        g.drawImage(bg,0,0,null);
+        g.setColor(new Color(0, 0, 0));
+        g.drawString("What do you want to feed?", width / 2 - 70, height / 2 - 80);
+
+        g.setColor(new Color(0, 0, 0, 119));
+        g.drawString("Health", 291, 121);
         for (int i = 1; i <= name.healthLvl / 10; i++) {
-            int rectPos = 240 + i * 11;
-            g.drawRect(rectPos, 10, 8, 10);
+            int rectPos = 351 + i * 11;
+            g.drawRect(rectPos, 111, 8, 10);
         }
-        g.setColor(new Color(255, 221, 52));
-        g.drawString("Happiness", 180, 35);
+        g.drawString("Happiness", 286, 141);
         for (int i = 1; i <= name.happinessLvl / 10; i++) {
-            int rectPos = 240 + i * 11;
-            g.drawRect(rectPos, 25, 8, 10);
+            int rectPos = 351 + i * 11;
+            g.drawRect(rectPos, 131, 8, 10);
+        }
+        g.setColor(new Color(0, 255, 69, 255));
+        g.drawString("Health", 290, 120);
+        for (int i = 1; i <= name.healthLvl / 10; i++) {
+            int rectPos = 350 + i * 11;
+            g.drawRect(rectPos, 110, 8, 10);
+        }
+        g.setColor(new Color(255, 221, 0));
+        g.drawString("Happiness", 285, 140);
+        for (int i = 1; i <= name.happinessLvl / 10; i++) {
+            int rectPos = 350 + i * 11;
+            g.drawRect(rectPos, 130, 8, 10);
         }
         try {
             if(name.loveLvl < 100){
-                g.drawImage(ImageIO.read(new File(Heart.risingHeart((name.loveLvl+5)/5))), 2, 2, null);
+                g.drawImage(ImageIO.read(new File(Heart.risingHeart((name.loveLvl+5)/5))), 102, 90, null);
             }
             else {
-                g.drawImage(ImageIO.read(new File(Heart.risingHeart(20))), 2, 2, null);
+                g.drawImage(ImageIO.read(new File(Heart.risingHeart(20))), 102, 90, null);
             }
         }
         catch (IOException e){
             e.printStackTrace();
         }
     }
+    public void petAnimation(){
+        g.drawImage(pet,0, 0, null);
+    }
+
     public void feeding() {
 
-        g.setColor(new Color(255, 255, 255));
+        g.setColor(new Color(0, 0, 0));
         for (Food i : foodCanvas) {
             if(i == foodCanvas.get(0)) {
                 g.drawString("Cupcake", i.x+30, i.y+100);
@@ -95,6 +114,8 @@ public class CanvasLayer {
                 g.drawImage(broccoli, i.x, i.y, null);
             }
         }
+    }
+    public void buffer(){
         bufferStrategy.show();
         g.dispose();
     }

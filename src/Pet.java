@@ -7,6 +7,11 @@ public class Pet {
     Timer lveTimer = null;
     Boolean moreLove;
 
+    public String filePet = "src/images/pet/p1.png";
+    public String petA(int i){
+        return filePet = filePet.replace(String.valueOf(i), String.valueOf(i+1));
+    }
+
 
     public Pet(String name) {
         this.name = name;
@@ -47,9 +52,6 @@ public class Pet {
         moreLove = healthLvl >= 50 && happinessLvl >= 30 || healthLvl >= 30 && happinessLvl >= 50;
 
     }
-
-
-
 
 /*        if(healthLvl>30) {
             System.out.println("Your pet" + name + "is healthy.");

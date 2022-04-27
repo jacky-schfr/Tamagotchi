@@ -73,6 +73,8 @@ public class GameLogic {
                 Var.currentTime = System.currentTimeMillis();
                 c.basicStats();
                 c.feeding();
+                c.petAnimation();
+                c.buffer();
                 pet.updatePet();
                 if (pet.moreLove && pet.lveTimer == null) {
                     pet.petLove();
