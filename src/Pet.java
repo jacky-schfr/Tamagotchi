@@ -1,3 +1,10 @@
+import org.json.JSONObject;
+
+import java.io.File;
+import java.io.FileWriter;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.Objects;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -7,19 +14,49 @@ public class Pet {
     Timer lveTimer = null;
     Boolean moreLove;
 
-    public String filePet = "src/images/pet/p1.png";
-    public String petA(int i){
-        return filePet = filePet.replace(String.valueOf(i), String.valueOf(i+1));
+    public String petA(){
+        String filePet = "src/images/pet/p0.png";
+        for(int i = 1; i <=3; i++) {
+            filePet = filePet.replace(String.valueOf(0), String.valueOf(i));
+//            if(i == 3){
+//                i =  0;
+//            }
+//            System.out.println(filePet);
+        }
+        return filePet;
     }
 
 
     public Pet(String name) {
         this.name = name;
-        this.happinessLvl = 50;
-        this.healthLvl = 50;
         this.happinessMax = 100;
         this.healthMax = 100;
-        this.loveLvl = 0;
+
+//        TODO: Initialisieren der Werte in einer eigenen Methode
+//              Abfragen ob es "Cutie" schon gibt in der GameLogic.java
+//              Also... entweder Aufrufen der init Methode ODER laden von Daten (Alles in der GameLogic.java)
+        if(!name.equals("Cutie")){
+            this.happinessLvl = 50;
+            this.healthLvl = 50;
+            this.loveLvl = 0;
+        }
+        else {
+//            TODO: Laden von Daten aus dem json File in der GameLogic.java mit einer eigenen Methode
+            File file = new File(Var.path +"//tamagotchi.json");
+
+            try{
+                String content = new String(Files.readAllBytes(Paths.get(file.toURI())), "UTF-8");
+                JSONObject json = new JSONObject(content);
+
+                name = (String)json.get("name");
+                loveLvl = json.getInt("loveLvl");
+                healthLvl = json.getInt("health");
+                happinessLvl = json.getInt("happiness");
+            }
+            catch (Exception e){
+                e.printStackTrace();
+            }
+        }
     }
 
     public void petHealth() {
@@ -63,7 +100,9 @@ public class Pet {
             System.out.println(name+" is ill. Please give "+name+" some medicine and take better care or "+name);
         }*/
 
-    public void moreHappiness() {
+    public void moreHappiness(Food f) {
+        happinessLvl = happinessLvl + f.happinessLvl;
+
         if (happinessLvl > 100) {
             happinessLvl = happinessMax;
         }
@@ -72,7 +111,9 @@ public class Pet {
         }
     }
 
-    public void moreHealth() {
+    public void moreHealth(Food f) {
+        healthLvl = healthLvl + f.foodValue;
+
         if (healthLvl > 100) {
             healthLvl = happinessMax;
         }

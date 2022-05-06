@@ -26,7 +26,6 @@ public class CanvasLayer {
             pizza = ImageIO.read(new File("src/images/pizza.png"));
             broccoli = ImageIO.read(new File("src/images/broccoli.png"));
             bg = ImageIO.read(new File("src/images/bg.png"));
-            pet = ImageIO.read(new File(name.petA(1)));
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -54,7 +53,7 @@ public class CanvasLayer {
 
         g = bufferStrategy.getDrawGraphics();
         g.clearRect(0, 0, width, height);
-        g.drawImage(bg,0,0,null);
+        g.drawImage(bg, 0, 0, null);
         g.setColor(new Color(0, 0, 0));
         g.drawString("What do you want to feed?", width / 2 - 70, height / 2 - 80);
 
@@ -82,41 +81,46 @@ public class CanvasLayer {
             g.drawRect(rectPos, 130, 8, 10);
         }
         try {
-            if(name.loveLvl < 100){
-                g.drawImage(ImageIO.read(new File(Heart.risingHeart((name.loveLvl+5)/5))), 102, 90, null);
-            }
-            else {
+            if (name.loveLvl < 100) {
+                g.drawImage(ImageIO.read(new File(Heart.risingHeart((name.loveLvl) / 5))), 102, 90, null);
+            } else {
                 g.drawImage(ImageIO.read(new File(Heart.risingHeart(20))), 102, 90, null);
             }
-        }
-        catch (IOException e){
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }
-    public void petAnimation(){
-        g.drawImage(pet,0, 0, null);
+
+    public void petAnimation() {
+        try {
+            g.drawImage(ImageIO.read(new File(name.petA())), 0, 0, null);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public void feeding() {
 
         g.setColor(new Color(0, 0, 0));
         for (Food i : foodCanvas) {
-            if(i == foodCanvas.get(0)) {
-                g.drawString("Cupcake", i.x+30, i.y+100);
+            if (i == foodCanvas.get(0)) {
+                g.drawString("Cupcake", i.x + 30, i.y + 100);
                 g.drawImage(cupcake, i.x, i.y, null);
             }
-            if(i == foodCanvas.get(1)) {
-                g.drawString("Pizza", i.x+40, i.y+100);
+            if (i == foodCanvas.get(1)) {
+                g.drawString("Pizza", i.x + 40, i.y + 100);
                 g.drawImage(pizza, i.x, i.y, null);
             }
-            if(i == foodCanvas.get(2)) {
-                g.drawString("Broccoli", i.x+30, i.y+100);
+            if (i == foodCanvas.get(2)) {
+                g.drawString("Broccoli", i.x + 30, i.y + 100);
                 g.drawImage(broccoli, i.x, i.y, null);
             }
         }
     }
-    public void buffer(){
+
+    public void buffer() {
         bufferStrategy.show();
         g.dispose();
     }
 }
+
