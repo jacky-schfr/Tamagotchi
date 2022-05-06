@@ -1,5 +1,3 @@
-import java.util.Arrays;
-
 public class Heart {
 
     public static String[] heartFile = {"heart1", "heart2", "heart3", "heart4", "heart5", "heart6", "heart7", "heart8",

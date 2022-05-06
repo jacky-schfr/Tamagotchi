@@ -1,67 +1,50 @@
-import org.json.JSONObject;
-
-import java.io.File;
-import java.io.FileWriter;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.util.Objects;
 import java.util.Timer;
 import java.util.TimerTask;
 
 public class Pet {
     int happinessLvl, healthLvl, happinessMax, healthMax, loveLvl;
     String name;
-    Timer lveTimer = null;
+    String[] petFile = {"p1", "p2", "p3"};
+    String filePet = "src/images/pet/" + petFile[Var.animationPetFileInt] + ".png";
+    Timer lveTimer = null, aPetTimer = null;
     Boolean moreLove;
 
-    public String petA(){
-        String filePet = "src/images/pet/p0.png";
-        for(int i = 1; i <=3; i++) {
-            filePet = filePet.replace(String.valueOf(0), String.valueOf(i));
-//            if(i == 3){
-//                i =  0;
-//            }
-//            System.out.println(filePet);
-        }
-        return filePet;
+    public void petA() {
+        aPetTimer = new Timer();
+        Var.animationTimer = Var.init();
+        aPetTimer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                if (Var.animationPetFileInt < 2) {
+                    Var.animationPetFileInt++;
+                }
+                else{
+                    Var.animationPetFileInt = 0;
+                }
+                filePet = "src/images/pet/" + petFile[Var.animationPetFileInt] + ".png";
+            }
+        }, 0, 600);
     }
-
 
     public Pet(String name) {
         this.name = name;
         this.happinessMax = 100;
         this.healthMax = 100;
-
-//        TODO: Initialisieren der Werte in einer eigenen Methode
-//              Abfragen ob es "Cutie" schon gibt in der GameLogic.java
-//              Also... entweder Aufrufen der init Methode ODER laden von Daten (Alles in der GameLogic.java)
-        if(!name.equals("Cutie")){
-            this.happinessLvl = 50;
-            this.healthLvl = 50;
-            this.loveLvl = 0;
-        }
-        else {
-//            TODO: Laden von Daten aus dem json File in der GameLogic.java mit einer eigenen Methode
-            File file = new File(Var.path +"//tamagotchi.json");
-
-            try{
-                String content = new String(Files.readAllBytes(Paths.get(file.toURI())), "UTF-8");
-                JSONObject json = new JSONObject(content);
-
-                name = (String)json.get("name");
-                loveLvl = json.getInt("loveLvl");
-                healthLvl = json.getInt("health");
-                happinessLvl = json.getInt("happiness");
-            }
-            catch (Exception e){
-                e.printStackTrace();
-            }
-        }
+    }
+    public void startValues() {
+        this.happinessLvl = 50;
+        this.healthLvl = 50;
+        this.loveLvl = 0;
     }
 
     public void petHealth() {
         if (healthLvl != 0) {
             healthLvl -= 1;
+        }
+    }
+    public void petHappiness() {
+        if (happinessLvl != 0) {
+            happinessLvl -= 1;
         }
     }
 

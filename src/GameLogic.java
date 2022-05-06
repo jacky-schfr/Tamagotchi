@@ -35,7 +35,13 @@ public class GameLogic {
 
         Pet pet = new Pet("Cutie");
 
-        boolean run = true;
+//        TODO: Bedingung anpassen
+        if(pet.name != "Cutie" ){
+            pet.startValues();
+        }
+        else {
+            reloadSave(pet);
+        }
 
         CanvasLayer c = new CanvasLayer(foodCanvas, pet);
 
@@ -66,6 +72,9 @@ public class GameLogic {
                 c.basicStats();
                 c.feeding();
                 c.petAnimation();
+                if(pet.aPetTimer == null){
+                    pet.petA();
+                }
                 c.buffer();
                 pet.updatePet();
                 if (pet.moreLove && pet.lveTimer == null) {
@@ -73,11 +82,28 @@ public class GameLogic {
                 }
                 if ((Var.currentTime - Var.healthTimer) >= 500) {
                     pet.petHealth();
+                    pet.petHappiness();
                     Var.healthTimer = System.currentTimeMillis();
                 }
                 save(pet);
             }
         }, 0, 60);
+    }
+    public static void reloadSave(Pet p){
+        File file = new File(Var.path +"//tamagotchi.json");
+
+        try{
+            String content = Files.readString(Paths.get(file.toURI()));
+            JSONObject json = new JSONObject(content);
+
+            p.name = (String)json.get("name");
+            p.loveLvl = json.getInt("loveLvl");
+            p.healthLvl = json.getInt("health");
+            p.happinessLvl = json.getInt("happiness");
+        }
+        catch (Exception e){
+            e.printStackTrace();
+        }
     }
     public static boolean foodCollide(Food food, MouseEvent mouse) {
         return mouse.getX() > food.x && mouse.getX() < (food.x + food.ovalWidth) &&
@@ -95,7 +121,7 @@ public class GameLogic {
             json.put("health", p.healthLvl);
             json.put("happiness", p.happinessLvl);
 
-            FileWriter fw = new FileWriter("src/save/tamagotchi.json");
+            FileWriter fw = new FileWriter(file);
             fw.write(json.toString());
             fw.flush();
             fw.close();

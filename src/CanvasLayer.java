@@ -21,6 +21,7 @@ public class CanvasLayer {
         this.foodCanvas = foodCanvas;
         this.name = name;
 
+//        filepath to non animated images (food & background)
         try {
             cupcake = ImageIO.read(new File("src/images/cupcake.png"));
             pizza = ImageIO.read(new File("src/images/pizza.png"));
@@ -30,23 +31,20 @@ public class CanvasLayer {
             e.printStackTrace();
         }
 
+//        setting up the frame and canvas
         mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         mainFrame.setSize(width, height);
         mainFrame.setVisible(true);
-//        mainFrame.setLocationRelativeTo(null);
+        mainFrame.setLocationRelativeTo(null);
         mainFrame.setResizable(false);
 
         canvas.setSize(width, height);
         canvas.setBackground(new Color(126, 146, 203, 255));
-//        canvas.setVisible(true);
-//        canvas.setFocusable(false);
+        canvas.setVisible(true);
 
         mainFrame.add(canvas);
-
-
         canvas.createBufferStrategy(3);
         bufferStrategy = canvas.getBufferStrategy();
-
     }
 
     public void basicStats() {
@@ -84,7 +82,7 @@ public class CanvasLayer {
             if (name.loveLvl < 100) {
                 g.drawImage(ImageIO.read(new File(Heart.risingHeart((name.loveLvl) / 5))), 102, 90, null);
             } else {
-                g.drawImage(ImageIO.read(new File(Heart.risingHeart(20))), 102, 90, null);
+                g.drawImage(ImageIO.read(new File(Heart.risingHeart(19))), 102, 90, null);
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -93,7 +91,8 @@ public class CanvasLayer {
 
     public void petAnimation() {
         try {
-            g.drawImage(ImageIO.read(new File(name.petA())), 0, 0, null);
+            g.drawImage(ImageIO.read(new File(name.filePet)), 0, 0, null);
+            System.out.println(name.filePet);
         } catch (IOException e) {
             e.printStackTrace();
         }
