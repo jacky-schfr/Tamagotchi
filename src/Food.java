@@ -6,14 +6,13 @@ public class Food {
         this.foodName = "Cupcake";
         this.foodValue = -10;
         this.happinessLvl = 30;
-//        return foodName + " Health: " + foodValue + " Happiness: " + happinessLvl;
     }
-    public void pizza(){
+    public void pizza() {
         this.foodName = "Pizza";
         this.foodValue = 10;
         this.happinessLvl = 30;
     }
-    public void broccoli(){
+    public void broccoli() {
         this.foodName = "Broccoli";
         this.foodValue = 40;
         this.happinessLvl = -10;
@@ -25,28 +24,16 @@ public class Food {
         this.ovalHeight = 100;
         this.ovalWidth = 70;
     }
-    public void pizzaParameter(){
+    public void pizzaParameter() {
         this.x = 250;
         this.y = 250;
         this.ovalHeight = 100;
         this.ovalWidth = 70;
     }
-    public void broccoliParameter(){
+    public void broccoliParameter() {
         this.x = 350;
         this.y = 250;
         this.ovalHeight = 100;
         this.ovalWidth = 70;
-    }
-
-    public int getFoodValue() {
-        return foodValue;
-    }
-
-/*    public int getHappinessLvl() {
-        return happinessLvl;
-    }*/
-
-    public String getFoodName() {
-        return foodName;
     }
 }

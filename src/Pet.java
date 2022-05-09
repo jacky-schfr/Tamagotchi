@@ -6,7 +6,7 @@ public class Pet {
     String name;
     String[] petFile = {"p1", "p2", "p3"};
     String filePet = "src/images/pet/" + petFile[Var.animationPetFileInt] + ".png";
-    Timer lveTimer = null, aPetTimer = null;
+    Timer lveTimer = null, aPetTimer = null, illTimer = null, deadTimer = null;
     Boolean moreLove;
 
     public void petA() {
@@ -17,8 +17,7 @@ public class Pet {
             public void run() {
                 if (Var.animationPetFileInt < 2) {
                     Var.animationPetFileInt++;
-                }
-                else{
+                } else {
                     Var.animationPetFileInt = 0;
                 }
                 filePet = "src/images/pet/" + petFile[Var.animationPetFileInt] + ".png";
@@ -31,6 +30,7 @@ public class Pet {
         this.happinessMax = 100;
         this.healthMax = 100;
     }
+
     public void startValues() {
         this.happinessLvl = 50;
         this.healthLvl = 50;
@@ -42,6 +42,7 @@ public class Pet {
             healthLvl -= 1;
         }
     }
+
     public void petHappiness() {
         if (happinessLvl != 0) {
             happinessLvl -= 1;
@@ -55,7 +56,7 @@ public class Pet {
             @Override
             public void run() {
                 if (loveLvl < 100) {
-                    if(!moreLove){
+                    if (!moreLove) {
                         lveTimer.cancel();
                         lveTimer = null;
                     }
@@ -68,7 +69,7 @@ public class Pet {
         }, 0, 60);
     }
 
-    public void updatePet(){
+    public void updatePet() {
         moreLove = healthLvl >= 50 && happinessLvl >= 30 || healthLvl >= 30 && happinessLvl >= 50;
 
     }
@@ -104,4 +105,31 @@ public class Pet {
             healthLvl = 0;
         }
     }
+
+    public void illness() {
+        illTimer = new Timer();
+        Var.illnessTimer = Var.init();
+        illTimer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                if (happinessLvl != 0) {
+                    illTimer.cancel();
+                    illTimer = null;
+                }
+                if (happinessLvl == 0) {
+                    if ((Var.currentTime - Var.illnessTimer) >= 3500) {
+                        Var.switchScreen = Display.ILL;
+                    }
+                    if ((Var.currentTime - Var.illnessTimer) >= 6500) {
+                        death();
+                    }
+//                    Var.illnessTimer = System.currentTimeMillis(); // bei Impfung.
+                }
+            }
+        }, 0, 60);
+    }
+    public void death() {
+        Var.switchScreen = Display.DEAD;
+    }
 }
+

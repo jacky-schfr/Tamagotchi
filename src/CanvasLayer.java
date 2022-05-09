@@ -15,7 +15,7 @@ public class CanvasLayer {
     int width = 615;
     int height = 635;
     BufferStrategy bufferStrategy;
-    BufferedImage cupcake, pizza, broccoli, bg, pet;
+    BufferedImage cupcake, pizza, broccoli, bg, cutlery, home, restart;
 
     public CanvasLayer(ArrayList<Food> foodCanvas, Pet name) {
         this.foodCanvas = foodCanvas;
@@ -27,6 +27,9 @@ public class CanvasLayer {
             pizza = ImageIO.read(new File("src/images/pizza.png"));
             broccoli = ImageIO.read(new File("src/images/broccoli.png"));
             bg = ImageIO.read(new File("src/images/bg.png"));
+            cutlery = ImageIO.read(new File("src/images/cutlery.png"));
+            home = ImageIO.read(new File("src/images/home.png"));
+            restart = ImageIO.read(new File("src/images/restart.png"));
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -47,13 +50,24 @@ public class CanvasLayer {
         bufferStrategy = canvas.getBufferStrategy();
     }
 
-    public void basicStats() {
+    public void basicLayer() {
+
+//button dummies
+//        MenuButtons homeB = new MenuButtons();
+//        homeB.homeParameter();
+//        MenuButtons cutlB = new MenuButtons();
+//        cutlB.restartParameter();
 
         g = bufferStrategy.getDrawGraphics();
         g.clearRect(0, 0, width, height);
         g.drawImage(bg, 0, 0, null);
+        g.drawImage(home, 0, 0, null);
+        g.drawImage(cutlery, 0, 0, null);
         g.setColor(new Color(0, 0, 0));
-        g.drawString("What do you want to feed?", width / 2 - 70, height / 2 - 80);
+//        g.drawRect(homeB.x, homeB.y, homeB.width, homeB.height);
+//        g.drawRect(cutlB.x, cutlB.y, cutlB.width, cutlB.height);
+    }
+    public void petStats() {
 
         g.setColor(new Color(0, 0, 0, 119));
         g.drawString("Health", 291, 121);
@@ -92,7 +106,6 @@ public class CanvasLayer {
     public void petAnimation() {
         try {
             g.drawImage(ImageIO.read(new File(name.filePet)), 0, 0, null);
-            System.out.println(name.filePet);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -101,6 +114,7 @@ public class CanvasLayer {
     public void feeding() {
 
         g.setColor(new Color(0, 0, 0));
+        g.drawString("What do you want to feed?", width / 2 - 70, height / 2 - 80);
         for (Food i : foodCanvas) {
             if (i == foodCanvas.get(0)) {
                 g.drawString("Cupcake", i.x + 30, i.y + 100);
@@ -115,6 +129,16 @@ public class CanvasLayer {
                 g.drawImage(broccoli, i.x, i.y, null);
             }
         }
+    }
+
+    public void illness(){
+
+    }
+
+    public void dead(){
+        g.setColor(new Color(0, 0, 0));
+        g.drawString("Your pet "+name.name+" died.", 250, 200);
+        g.drawImage(restart, 0, 0, null);
     }
 
     public void buffer() {

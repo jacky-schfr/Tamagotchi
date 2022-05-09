@@ -1,10 +1,8 @@
-import netscape.javascript.JSException;
-import netscape.javascript.JSObject;
-
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.File;
 import java.io.FileWriter;
+import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
@@ -27,6 +25,13 @@ public class GameLogic {
         broccoli.broccoli();
         broccoli.broccoliParameter();
 
+        MenuButtons homeB = new MenuButtons();
+        homeB.homeParameter();
+        MenuButtons cutlB = new MenuButtons();
+        cutlB.cutleryParameter();
+
+        MenuButtons restaB = new MenuButtons();
+        restaB.restartParameter();
 
         ArrayList<Food> foodCanvas = new ArrayList<>();
         foodCanvas.add(cupcake);
@@ -36,7 +41,7 @@ public class GameLogic {
         Pet pet = new Pet("Cutie");
 
 //        TODO: Bedingung anpassen
-        if(pet.name != "Cutie" ){
+        if(pet.name == ""){
             pet.startValues();
         }
         else {
@@ -47,17 +52,33 @@ public class GameLogic {
 
         c.canvas.addMouseListener(new MouseAdapter() {
             public void mouseClicked(MouseEvent e) {
-                if (foodCollide(cupcake, e)) {
-                    pet.moreHappiness(cupcake);
-                    pet.moreHealth(cupcake);
+                if (Var.switchScreen == Display.FOOD_SCREEN){
+                    if (foodCollide(cupcake, e)) {
+                        pet.moreHappiness(cupcake);
+                        pet.moreHealth(cupcake);
+                    }
+                    if (foodCollide(pizza, e)) {
+                        pet.moreHappiness(pizza);
+                        pet.moreHealth(pizza);
+                    }
+                    if (foodCollide(broccoli, e)) {
+                        pet.moreHappiness(broccoli);
+                        pet.moreHealth(broccoli);
+                    }
                 }
-                if (foodCollide(pizza, e)) {
-                    pet.moreHappiness(pizza);
-                    pet.moreHealth(pizza);
+                if (imageCollide(homeB, e)){
+                    Var.switchScreen = Display.HOME_SCREEN;
                 }
-                if (foodCollide(broccoli, e)) {
-                    pet.moreHappiness(broccoli);
-                    pet.moreHealth(broccoli);
+                if (imageCollide(cutlB, e)){
+                    Var.switchScreen = Display.FOOD_SCREEN;;
+                }
+                if (imageCollide(restaB, e) && Var.switchScreen == Display.DEAD){
+                    try {
+                        Var.petSave.createNewFile();
+                    } catch (IOException ex) {
+                        ex.printStackTrace();
+                    }
+                    pet.startValues();
                 }
             }
         });
@@ -69,9 +90,25 @@ public class GameLogic {
             @Override
             public void run() {
                 Var.currentTime = System.currentTimeMillis();
-                c.basicStats();
-                c.feeding();
-                c.petAnimation();
+                c.basicLayer();
+                if (Var.switchScreen != Display.DEAD){
+                    c.petStats();
+                }
+                if (Var.switchScreen == Display.FOOD_SCREEN){
+                    c.feeding();
+                }
+                if (Var.switchScreen == Display.HOME_SCREEN){
+                    c.petAnimation();
+                }
+                if (Var.switchScreen == Display.ILL){
+                    ; // animation of a sick pet
+                }
+                if (Var.switchScreen == Display.DEAD){
+                    c.dead();
+                }
+                if (pet.happinessLvl == 0 && pet.illTimer == null){
+                    pet.illness();
+                }
                 if(pet.aPetTimer == null){
                     pet.petA();
                 }
@@ -89,11 +126,28 @@ public class GameLogic {
             }
         }, 0, 60);
     }
-    public static void reloadSave(Pet p){
-        File file = new File(Var.path +"//tamagotchi.json");
-
+    public static void save(Pet p){
         try{
-            String content = Files.readString(Paths.get(file.toURI()));
+            String content = new String(Files.readAllBytes(Paths.get(Var.petSave.toURI())), "UTF-8");
+            JSONObject json = new JSONObject(content);
+
+            json.put("name", p.name);
+            json.put("loveLvl", p.loveLvl);
+            json.put("health", p.healthLvl);
+            json.put("happiness", p.happinessLvl);
+
+            FileWriter fw = new FileWriter(Var.petSave);
+            fw.write(json.toString());
+            fw.flush();
+            fw.close();
+        }
+        catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+    public static void reloadSave(Pet p){
+        try{
+            String content = Files.readString(Paths.get(Var.petSave.toURI()));
             JSONObject json = new JSONObject(content);
 
             p.name = (String)json.get("name");
@@ -109,26 +163,10 @@ public class GameLogic {
         return mouse.getX() > food.x && mouse.getX() < (food.x + food.ovalWidth) &&
                 mouse.getY() > food.y && mouse.getY() < (food.y + food.ovalHeight);
     }
-    public static void save(Pet p){
-        File file = new File(Var.path +"//tamagotchi.json");
-        try{
-            String content = new String(Files.readAllBytes(Paths.get(file.toURI())), "UTF-8");
-            JSONObject json = new JSONObject(content);
-            System.out.println(json);
+    public static boolean imageCollide(MenuButtons b,MouseEvent mouse){
+        return mouse.getX() > b.x && mouse.getX() < (b.x + b.width) &&
+                mouse.getY() > b.y && mouse.getY() < (b.y + b.height);
 
-            json.put("name", p.name);
-            json.put("loveLvl", p.loveLvl);
-            json.put("health", p.healthLvl);
-            json.put("happiness", p.happinessLvl);
-
-            FileWriter fw = new FileWriter(file);
-            fw.write(json.toString());
-            fw.flush();
-            fw.close();
-        }
-        catch (Exception e){
-            e.printStackTrace();
-        }
     }
 }
 
